@@ -5,7 +5,7 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 
 # Database setup
 path = "/Users/yol/Desktop/BOOTCAMP/08_SQL_ADVANCED/sqlalchemy-challenge/data/hawaii.sqlite"
@@ -28,14 +28,14 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return (
-		f'<h2>Welcome to the Climate API!</h2>'
-		f'<p>Here are some of the available options you can choose:</p>'
+		f'<h1>Welcome to the Climate API!</h1>'
+		f'<p>Here are some of the available options you can use:</p>'
 		f'<ul>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/precipitation">Daily precipitation rates</a></li>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/stations">Available weather stations</a></li>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/tobs">Temperature observations for past 12 months</a></li>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/start">Temperature stats for all dates &gt= &ltstart_date&gt</a></li>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/between">Temperature stats for all dates between &ltstart_date&gt and &ltend_date&gt</a></li>'
+			f'<li><a href="http://127.0.0.1:5000/api/v1.0/precipitation">Daily precipitation rates with /precipitation</a></li>'
+			f'<li><a href="http://127.0.0.1:5000/api/v1.0/stations">Available weather stations with /stations</a></li>'
+			f'<li><a href="http://127.0.0.1:5000/api/v1.0/tobs">Temperature observations for past 12 months with /tobs</a></li>'
+			f'<li><a href="http://127.0.0.1:5000/api/v1.0/start?start_date=2013-01-01">Temperature stats for dates greater than &ltstart_date&gt with /start?start_date=YYYY-MM-DD</a></li>'
+			f'<li><a href="http://127.0.0.1:5000/api/v1.0/between?start_date=2015-01-01&end_date=2016-12-31">Temperature stats for dates between &ltstart_date&gt and &ltend_date&gt with /between?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD</a></li>'
 		f'</ul>'
     )
 
@@ -92,35 +92,37 @@ def tobs():
 
 # Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range.
 # When given the start only, calculate TMIN, TAVG, and TMAX for all dates greater than and equal to the start date.
+@app.route('/api/v1.0/start', defaults={'start_date':'2013-01-01'})
 @app.route('/api/v1.0/start')
 def start():
 	session = Session(engine)
-	start_date = '2013-01-01'
+	start_date = request.args['start_date']
 	start_results = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).filter(Measurement.date >= start_date).all()
 	session.close()
 	all_start = []
 	for min, max, avg in start_results:
 		start_dict = {}
-		start_dict['min'] = min
-		start_dict['max'] = max
-		start_dict['avg'] = avg
+		start_dict['TMIN'] = min
+		start_dict['TMAX'] = max
+		start_dict['TAVG'] = avg
 		all_start.append(start_dict)
 	return jsonify(all_start)
 
 # When given the start and the end date, calculate the TMIN, TAVG, and TMAX for dates between the start and end date inclusive.
+@app.route('/api/v1.0/between', defaults={'start_date':'2015-01-01', 'end_date':'2016-12-31'})
 @app.route('/api/v1.0/between')
-def end():
+def between():
 	session = Session(engine)
-	start_date = '2015-01-01'
-	end_date = '2016-12-31'
+	start_date = request.args['start_date']
+	end_date = request.args['end_date']
 	between_results = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).filter((Measurement.date >= start_date) & (Measurement.date <= end_date)).all()
 	session.close()
 	all_between = []
 	for min, max, avg in between_results:
 		between_dict = {}
-		between_dict['min'] = min
-		between_dict['max'] = max
-		between_dict['avg'] = avg
+		between_dict['TMIN'] = min
+		between_dict['TMAX'] = max
+		between_dict['TAVG'] = avg
 		all_between.append(between_dict)
 	return jsonify(all_between)
 

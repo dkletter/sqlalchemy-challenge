@@ -31,11 +31,11 @@ def index():
 		f'<h1>Welcome to the Climate API!</h1>'
 		f'<p>Here are some of the available options you can use:</p>'
 		f'<ul>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/precipitation">Daily precipitation rates with /precipitation</a></li>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/stations">Available weather stations with /stations</a></li>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/tobs">Temperature observations for past 12 months with /tobs</a></li>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/start?start_date=2013-01-01">Temperature stats for dates greater than &ltstart_date&gt with /start?start_date=YYYY-MM-DD</a></li>'
-			f'<li><a href="http://127.0.0.1:5000/api/v1.0/between?start_date=2015-01-01&end_date=2016-12-31">Temperature stats for dates between &ltstart_date&gt and &ltend_date&gt with /between?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD</a></li>'
+			f'<li><a style="text-decoration: none;" href="http://127.0.0.1:5000/api/v1.0/precipitation">Daily precipitation rates with /precipitation</a></li>'
+			f'<li><a style="text-decoration: none;" href="http://127.0.0.1:5000/api/v1.0/stations">Available weather stations with /stations</a></li>'
+			f'<li><a style="text-decoration: none;" href="http://127.0.0.1:5000/api/v1.0/tobs">Temperature observations for past 12 months with /tobs</a></li>'
+			f'<li><a style="text-decoration: none;" href="http://127.0.0.1:5000/api/v1.0/start?start_date=2013-01-01">Temperature stats for dates greater than &ltstart_date&gt with /start?start_date=YYYY-MM-DD</a></li>'
+			f'<li><a style="text-decoration: none;" href="http://127.0.0.1:5000/api/v1.0/between?start_date=2015-01-01&end_date=2016-12-31">Temperature stats for dates between &ltstart_date&gt and &ltend_date&gt with /between?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD</a></li>'
 		f'</ul>'
     )
 

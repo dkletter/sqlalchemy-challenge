@@ -2,7 +2,7 @@
 
 #### Objective:
 
-Determine the best time of year to vacation in Hawaii.
+Use sqlalchemy to perform climate and weather analysis.
 
 #### Step 1 - Climate Analysis and Exploration
 
